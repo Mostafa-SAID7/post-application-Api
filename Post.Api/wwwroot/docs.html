@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Docs — PostAPI</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="navbar-brand">
+      <span class="brand-icon">⚡</span>PostAPI
+    </a>
+    <div class="navbar-links">
+      <a href="/"           class="nav-link" data-page="home">Home</a>
+      <a href="/docs.html"  class="nav-link" data-page="docs">Docs</a>
+      <a href="/stats.html" class="nav-link" data-page="stats">Stats</a>
+      <a href="/swagger/index.html" class="nav-link external" target="_blank" rel="noopener">Swagger</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>API Reference</span>
+      </div>
+      <h1>API Reference</h1>
+      <p>Complete documentation for all available endpoints. Base URL: <code class="mono" style="color:var(--primary);">/api</code></p>
+    </div>
+  </div>
+
+  <!-- ── Docs Layout ── -->
+  <div class="container">
+    <div class="docs-layout">
+
+      <!-- Sidebar -->
+      <aside class="docs-sidebar">
+        <div class="sidebar-title">Overview</div>
+        <a href="#overview"  class="sidebar-link">📖 Introduction</a>
+        <a href="#errors"    class="sidebar-link">⚠ Error Responses</a>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">Resources</div>
+        <a href="#posts"      class="sidebar-link">📝 Posts</a>
+        <a href="#categories" class="sidebar-link">🗂 Categories</a>
+        <a href="#tags"       class="sidebar-link">🏷 Tags</a>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-title">Try it</div>
+        <a href="/swagger/index.html" class="sidebar-link external" target="_blank" rel="noopener" style="color:var(--primary);">
+          Open Swagger UI ↗
+        </a>
+      </aside>
+
+      <!-- Main content -->
+      <main>
+
+        <!-- Overview -->
+        <section id="overview" class="mb-32">
+          <div class="section-title mb-8">Introduction</div>
+          <p style="color:var(--text-muted); margin-bottom:16px;">
+            PostAPI is a RESTful API built with ASP.NET Core 8 following Clean Architecture principles. All requests and responses use JSON.
+          </p>
+          <div class="alert alert-info">
+            ℹ All endpoints are prefixed with <code class="mono">/api</code>. Interactive documentation is available at <a href="/swagger/index.html" target="_blank">Swagger UI</a>.
+          </div>
+
+          <div class="card" style="margin-top:20px;">
+            <div class="card-header"><div class="card-title">Base URL</div></div>
+            <div class="card-body">
+              <div class="code-block">
+                <span class="cm">// Development</span>
+                http://localhost:5000/api
+
+                <span class="cm">// Example: get all posts</span>
+                <span class="kw">GET</span> http://localhost:5000/api/posts
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Error Responses -->
+        <section id="errors" class="mb-32">
+          <div class="section-title mb-8">Error Responses</div>
+          <p style="color:var(--text-muted); margin-bottom:16px;">
+            All errors follow a consistent JSON shape.
+          </p>
+          <div class="grid grid-2" style="gap:12px; margin-bottom:16px;">
+            <div class="card">
+              <div class="card-body">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                  <span class="badge badge-neutral">400</span>
+                  <strong>Validation Error</strong>
+                </div>
+                <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"errors"</span>: {
+    <span class="str">"Title"</span>: [<span class="str">"Title is required."</span>]
+  }
+}
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                  <span class="badge badge-neutral">404</span>
+                  <strong>Not Found</strong>
+                </div>
+                <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"type"</span>: <span class="str">"EntityNotFoundException"</span>,
+  <span class="str">"message"</span>: <span class="str">"Post with Id ... was not found."</span>
+}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ── Posts ── -->
+        <section id="posts" class="mb-32">
+          <div class="endpoint-group-title">📝 Posts</div>
+
+          <!-- GET /posts -->
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/posts</div>
+              <div class="endpoint-desc">Returns all non-deleted posts.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+          <div style="margin-bottom:20px; padding-left:16px;">
+            <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"items"</span>: [
+    {
+      <span class="str">"id"</span>:      <span class="str">"uuid"</span>,
+      <span class="str">"title"</span>:   <span class="str">"Post Title"</span>,
+      <span class="str">"content"</span>: <span class="str">"..."</span>
+    }
+  ]
+}
+            </div>
+          </div>
+
+          <!-- GET /posts/search -->
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/posts/search</div>
+              <div class="endpoint-desc">Search with filters, sorting, and pagination.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+          <div style="margin-bottom:20px; padding-left:16px;">
+            <div class="card">
+              <div class="card-body" style="padding:16px 20px;">
+                <div class="card-title mb-8">Query Parameters</div>
+                <table style="width:100%; border-collapse:collapse; font-size:0.82rem;">
+                  <thead><tr style="border-bottom:1px solid var(--border);">
+                    <th style="text-align:left; padding:6px 8px; color:var(--text-muted);">Param</th>
+                    <th style="text-align:left; padding:6px 8px; color:var(--text-muted);">Type</th>
+                    <th style="text-align:left; padding:6px 8px; color:var(--text-muted);">Description</th>
+                  </tr></thead>
+                  <tbody>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">searchTerm</td><td style="padding:6px 8px;">string</td><td style="padding:6px 8px;">Full-text search in title / content</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">categoryId</td><td style="padding:6px 8px;">guid</td><td style="padding:6px 8px;">Filter by category</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">tagIds</td><td style="padding:6px 8px;">guid[]</td><td style="padding:6px 8px;">Filter by one or more tags</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">createdAfter</td><td style="padding:6px 8px;">datetime</td><td style="padding:6px 8px;">Filter posts created after date</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">createdBefore</td><td style="padding:6px 8px;">datetime</td><td style="padding:6px 8px;">Filter posts created before date</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">minViewCount</td><td style="padding:6px 8px;">int</td><td style="padding:6px 8px;">Minimum view count threshold</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">sortBy</td><td style="padding:6px 8px;">string</td><td style="padding:6px 8px;">Field to sort by (default: <code class="mono">created</code>)</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">sortDirection</td><td style="padding:6px 8px;">0 | 1</td><td style="padding:6px 8px;">0 = ascending, 1 = descending</td></tr>
+                    <tr style="border-bottom:1px solid var(--border);"><td style="padding:6px 8px;" class="mono">pageNumber</td><td style="padding:6px 8px;">int</td><td style="padding:6px 8px;">Page number (default: 1)</td></tr>
+                    <tr><td style="padding:6px 8px;" class="mono">pageSize</td><td style="padding:6px 8px;">int</td><td style="padding:6px 8px;">Items per page, max 100 (default: 10)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- GET /posts/{id} -->
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/posts/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Get a single post by GUID.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <!-- POST /posts -->
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/posts</div>
+              <div class="endpoint-desc">Create a new post. Slug is auto-generated from the title.</div>
+            </div>
+            <span class="badge badge-neutral">201</span>
+          </div>
+          <div style="margin-bottom:20px; padding-left:16px;">
+            <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"title"</span>:      <span class="str">"My First Post"</span>,         <span class="cm">// required, max 200</span>
+  <span class="str">"content"</span>:    <span class="str">"Full post body..."</span>,      <span class="cm">// required, min 10</span>
+  <span class="str">"summary"</span>:    <span class="str">"Short summary"</span>,          <span class="cm">// optional</span>
+  <span class="str">"categoryId"</span>: <span class="str">"uuid"</span>,                  <span class="cm">// optional</span>
+  <span class="str">"tagIds"</span>:     [<span class="str">"uuid"</span>, <span class="str">"uuid"</span>]        <span class="cm">// optional</span>
+}
+            </div>
+          </div>
+
+          <!-- PUT /posts/{id} -->
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-put">PUT</span>
+            <div>
+              <div class="endpoint-path">/api/posts/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Update a post. Replaces title, content, summary, category, and tags.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <!-- DELETE /posts/{id} -->
+          <div class="endpoint-item">
+            <span class="badge badge-delete">DEL</span>
+            <div>
+              <div class="endpoint-path">/api/posts/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Soft-delete a post (sets IsDeleted = true).</div>
+            </div>
+            <span class="badge badge-neutral">204</span>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ── Categories ── -->
+        <section id="categories" class="mb-32">
+          <div class="endpoint-group-title">🗂 Categories</div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/categories</div>
+              <div class="endpoint-desc">Get all categories. Use <code class="mono">?rootOnly=true</code> for top-level only, <code class="mono">?parentCategoryId=uuid</code> for subcategories.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/categories/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Get a single category by GUID.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/categories</div>
+              <div class="endpoint-desc">Create a category. Name must be unique. Parent categories supported for hierarchy.</div>
+            </div>
+            <span class="badge badge-neutral">201</span>
+          </div>
+          <div style="margin-bottom:20px; padding-left:16px;">
+            <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"name"</span>:             <span class="str">"Technology"</span>,  <span class="cm">// required, max 100</span>
+  <span class="str">"description"</span>:      <span class="str">"Tech news"</span>,   <span class="cm">// optional, max 500</span>
+  <span class="str">"parentCategoryId"</span>: <span class="str">"uuid"</span>          <span class="cm">// optional — creates hierarchy</span>
+}
+            </div>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-put">PUT</span>
+            <div>
+              <div class="endpoint-path">/api/categories/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Update name, description, or parent. Circular hierarchy is rejected.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item">
+            <span class="badge badge-delete">DEL</span>
+            <div>
+              <div class="endpoint-path">/api/categories/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Soft-delete a category.</div>
+            </div>
+            <span class="badge badge-neutral">204</span>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ── Tags ── -->
+        <section id="tags">
+          <div class="endpoint-group-title">🏷 Tags</div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/tags</div>
+              <div class="endpoint-desc">Get all tags. Use <code class="mono">?popularOnly=true&take=10</code> to get the most-used tags sorted by Count.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-get">GET</span>
+            <div>
+              <div class="endpoint-path">/api/tags/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Get a single tag by GUID.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-post">POST</span>
+            <div>
+              <div class="endpoint-path">/api/tags</div>
+              <div class="endpoint-desc">Create a tag. Name must be unique (case-insensitive). Slug is auto-generated.</div>
+            </div>
+            <span class="badge badge-neutral">201</span>
+          </div>
+          <div style="margin-bottom:20px; padding-left:16px;">
+            <div class="code-block" style="font-size:0.78rem;">
+{
+  <span class="str">"name"</span>:        <span class="str">"dotnet"</span>,        <span class="cm">// required, max 50</span>
+  <span class="str">"description"</span>: <span class="str">"All .NET posts"</span>  <span class="cm">// optional, max 300</span>
+}
+            </div>
+          </div>
+
+          <div class="endpoint-item mb-8">
+            <span class="badge badge-put">PUT</span>
+            <div>
+              <div class="endpoint-path">/api/tags/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Update a tag's name or description. Slug is not changed on update.</div>
+            </div>
+            <span class="badge badge-success">200</span>
+          </div>
+
+          <div class="endpoint-item">
+            <span class="badge badge-delete">DEL</span>
+            <div>
+              <div class="endpoint-path">/api/tags/<span class="param">{id}</span></div>
+              <div class="endpoint-desc">Soft-delete a tag.</div>
+            </div>
+            <span class="badge badge-neutral">204</span>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand"><span style="font-size:1.1rem;">⚡</span> PostAPI</div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/stats.html">Stats</a>
+          <a href="/swagger/index.html" target="_blank" rel="noopener">Swagger</a>
+        </div>
+        <div class="footer-copy">Built with .NET 8 · Clean Architecture</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

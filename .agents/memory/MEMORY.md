@@ -1,0 +1,1 @@
+- [Static files vs RequestLoggingMiddleware](static-files-middleware.md) — UseStaticFiles breaks when RequestLoggingMiddleware swaps Response.Body; also UseDefaultFiles fails with explicit PhysicalFileProvider on root path.

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PostAPI — Clean Architecture Blog API</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="navbar-brand">
+      <span class="brand-icon">⚡</span>PostAPI
+    </a>
+    <div class="navbar-links">
+      <a href="/"          class="nav-link" data-page="home">Home</a>
+      <a href="/docs.html" class="nav-link" data-page="docs">Docs</a>
+      <a href="/stats.html" class="nav-link" data-page="stats">Stats</a>
+      <a href="/swagger/index.html" class="nav-link external" target="_blank" rel="noopener">Swagger</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<div class="page-wrap">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">⚙ REST API · .NET 8 · Clean Architecture</div>
+        <h1>A modern<br /><span>Blog API</span><br />built right</h1>
+        <p>Full CRUD for Posts, Categories &amp; Tags. Built with Clean Architecture, CQRS, MediatR, FluentValidation, and Entity Framework Core on SQLite.</p>
+        <div class="hero-actions">
+          <a href="/swagger/index.html" class="btn btn-primary" target="_blank" rel="noopener">
+            🔍 Explore Swagger UI
+          </a>
+          <a href="/docs.html" class="btn btn-outline">📄 View API Docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Live Stats ── -->
+  <section class="section-sm" style="background:var(--surface); border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div class="grid grid-3" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-icon indigo">📝</div>
+          <div>
+            <div id="stat-posts" class="stat-loading"><div class="spinner"></div></div>
+            <div class="stat-label">Total Posts</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon cyan">🗂</div>
+          <div>
+            <div id="stat-categories" class="stat-loading"><div class="spinner"></div></div>
+            <div class="stat-label">Categories</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">🏷</div>
+          <div>
+            <div id="stat-tags" class="stat-loading"><div class="spinner"></div></div>
+            <div class="stat-label">Tags</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-title">Built with best practices</div>
+      <div class="section-sub">Every layer has a single responsibility and clear boundaries.</div>
+      <div class="grid grid-4">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#EEF2FF;">🏛</div>
+          <div class="feature-title">Clean Architecture</div>
+          <div class="feature-desc">Domain → Application → Infrastructure → API. No upward dependencies.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#ECFDF5;">⚡</div>
+          <div class="feature-title">CQRS + MediatR</div>
+          <div class="feature-desc">Commands and queries are fully decoupled via the MediatR pipeline.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FFFBEB;">✅</div>
+          <div class="feature-title">FluentValidation</div>
+          <div class="feature-desc">All commands are validated in the pipeline before reaching handlers.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FEF2F2;">🗄</div>
+          <div class="feature-title">EF Core + SQLite</div>
+          <div class="feature-desc">Soft deletes, query filters, indexes, and seeded data out of the box.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#F0FDFA;">🔄</div>
+          <div class="feature-title">AutoMapper</div>
+          <div class="feature-desc">Clean separation between domain entities and API response DTOs.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FDF4FF;">📦</div>
+          <div class="feature-title">Repository Pattern</div>
+          <div class="feature-desc">Generic and entity-specific repositories with UnitOfWork transactions.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#FFF7ED;">🔍</div>
+          <div class="feature-title">Advanced Search</div>
+          <div class="feature-desc">Filter posts by term, category, tags, date range and view count.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#F0F9FF;">🪵</div>
+          <div class="feature-title">Pipeline Behaviors</div>
+          <div class="feature-desc">Logging, caching, performance, and exception handling in the MediatR pipeline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Endpoints Preview ── -->
+  <section class="section" style="background:var(--surface); border-top:1px solid var(--border);">
+    <div class="container">
+      <div class="section-title">API Endpoints</div>
+      <div class="section-sub">Three resource groups — each with full CRUD coverage.</div>
+      <div class="grid grid-3">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📝 Posts</div>
+            <span class="badge badge-info">6 endpoints</span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/posts</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/posts/search</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/posts/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-post">POST</span>
+              <span class="endpoint-path">/api/posts</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-put">PUT</span>
+              <span class="endpoint-path">/api/posts/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-radius:0; margin:0;">
+              <span class="badge badge-delete">DEL</span>
+              <span class="endpoint-path">/api/posts/<span class="param">{id}</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🗂 Categories</div>
+            <span class="badge badge-info">5 endpoints</span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/categories</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/categories/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-post">POST</span>
+              <span class="endpoint-path">/api/categories</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-put">PUT</span>
+              <span class="endpoint-path">/api/categories/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-radius:0; margin:0;">
+              <span class="badge badge-delete">DEL</span>
+              <span class="endpoint-path">/api/categories/<span class="param">{id}</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🏷 Tags</div>
+            <span class="badge badge-info">5 endpoints</span>
+          </div>
+          <div class="card-body" style="padding:0;">
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/tags</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-get">GET</span>
+              <span class="endpoint-path">/api/tags/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-post">POST</span>
+              <span class="endpoint-path">/api/tags</span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-bottom:1px solid var(--border); border-radius:0; margin:0;">
+              <span class="badge badge-put">PUT</span>
+              <span class="endpoint-path">/api/tags/<span class="param">{id}</span></span>
+            </div>
+            <div class="endpoint-item" style="border:none; border-radius:0; margin:0;">
+              <span class="badge badge-delete">DEL</span>
+              <span class="endpoint-path">/api/tags/<span class="param">{id}</span></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div style="text-align:center; margin-top:32px;">
+        <a href="/docs.html" class="btn btn-ghost">View full documentation →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand"><span style="font-size:1.1rem;">⚡</span> PostAPI</div>
+        <div class="footer-links">
+          <a href="/docs.html">Docs</a>
+          <a href="/stats.html">Stats</a>
+          <a href="/swagger/index.html" target="_blank" rel="noopener">Swagger</a>
+        </div>
+        <div class="footer-copy">Built with .NET 8 · Clean Architecture</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="/js/main.js"></script>
+<script>
+  (async () => {
+    const { apiFetch, fmt, animateCount } = window.PostAPI;
+
+    const [posts, cats, tags] = await Promise.all([
+      apiFetch('/posts'),
+      apiFetch('/categories'),
+      apiFetch('/tags'),
+    ]);
+
+    function setCount(id, count) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = `<div class="stat-value" id="${id}-num">0</div>`;
+      animateCount(document.getElementById(`${id}-num`), count ?? 0);
+    }
+
+    setCount('stat-posts',      posts?.items?.length ?? 0);
+    setCount('stat-categories', cats?.items?.length  ?? 0);
+    setCount('stat-tags',       tags?.items?.length  ?? 0);
+  })();
+</script>
+</body>
+</html>

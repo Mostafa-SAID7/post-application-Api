@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stats — PostAPI</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+  <div class="container">
+    <a href="/" class="navbar-brand">
+      <span class="brand-icon">⚡</span>PostAPI
+    </a>
+    <div class="navbar-links">
+      <a href="/"           class="nav-link" data-page="home">Home</a>
+      <a href="/docs.html"  class="nav-link" data-page="docs">Docs</a>
+      <a href="/stats.html" class="nav-link" data-page="stats">Stats</a>
+      <a href="/swagger/index.html" class="nav-link external" target="_blank" rel="noopener">Swagger</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Statistics</span>
+      </div>
+      <h1>Live Statistics</h1>
+      <p>Real-time data fetched directly from the API. <span id="refresh-label" style="color:var(--text-light);">Refreshing…</span></p>
+    </div>
+  </div>
+
+  <section class="section-sm">
+    <div class="container">
+
+      <!-- Big Stat Cards -->
+      <div class="grid grid-3 mb-32">
+        <div class="stat-card" id="card-posts">
+          <div class="stat-icon indigo" style="width:56px;height:56px;font-size:1.6rem;">📝</div>
+          <div style="flex:1;">
+            <div class="big-number" id="count-posts">–</div>
+            <div class="stat-label" style="font-size:0.9rem; margin-top:4px;">Total Posts</div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-posts" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="stat-card" id="card-categories">
+          <div class="stat-icon cyan" style="width:56px;height:56px;font-size:1.6rem;">🗂</div>
+          <div style="flex:1;">
+            <div class="big-number" id="count-categories" style="color:#0891B2;">–</div>
+            <div class="stat-label" style="font-size:0.9rem; margin-top:4px;">Categories</div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-categories" style="width:0%; background:linear-gradient(90deg,#06B6D4,#0EA5E9);"></div></div>
+          </div>
+        </div>
+        <div class="stat-card" id="card-tags">
+          <div class="stat-icon green" style="width:56px;height:56px;font-size:1.6rem;">🏷</div>
+          <div style="flex:1;">
+            <div class="big-number" id="count-tags" style="color:#059669;">–</div>
+            <div class="stat-label" style="font-size:0.9rem; margin-top:4px;">Tags</div>
+            <div class="progress-bar"><div class="progress-fill" id="bar-tags" style="width:0%; background:linear-gradient(90deg,#10B981,#34D399);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle row -->
+      <div class="grid grid-2 mb-32" style="gap:24px;">
+
+        <!-- Popular Tags -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔥 Popular Tags</div>
+            <span class="badge badge-neutral" id="tags-total-badge">–</span>
+          </div>
+          <div class="card-body">
+            <div id="popular-tags-area">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text" style="width:70%;margin-top:8px;"></div>
+              <div class="skeleton skeleton-text" style="width:85%;margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Root Categories -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🗂 Root Categories</div>
+            <span class="badge badge-neutral" id="cats-total-badge">–</span>
+          </div>
+          <div class="card-body">
+            <div id="categories-area">
+              <div class="skeleton skeleton-text"></div>
+              <div class="skeleton skeleton-text" style="width:75%;margin-top:8px;"></div>
+              <div class="skeleton skeleton-text" style="width:60%;margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Posts -->
+      <div class="card mb-32">
+        <div class="card-header">
+          <div class="card-title">🕑 Recent Posts</div>
+          <a href="/docs.html#posts" class="btn btn-ghost btn-sm">View docs →</a>
+        </div>
+        <div class="card-body" style="padding:0 24px;">
+          <div id="recent-posts-area">
+            <div style="padding:16px 0;">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text"></div>
+            </div>
+            <div style="padding:16px 0; border-top:1px solid var(--border);">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Tags -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🏷 All Tags</div>
+          <span class="badge badge-neutral" id="all-tags-badge">–</span>
+        </div>
+        <div class="card-body">
+          <div class="tag-cloud" id="all-tags-cloud">
+            <div class="skeleton skeleton-text" style="width:60px;height:28px;border-radius:999px;"></div>
+            <div class="skeleton skeleton-text" style="width:80px;height:28px;border-radius:999px;"></div>
+            <div class="skeleton skeleton-text" style="width:50px;height:28px;border-radius:999px;"></div>
+            <div class="skeleton skeleton-text" style="width:90px;height:28px;border-radius:999px;"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand"><span style="font-size:1.1rem;">⚡</span> PostAPI</div>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/docs.html">Docs</a>
+          <a href="/swagger/index.html" target="_blank" rel="noopener">Swagger</a>
+        </div>
+        <div class="footer-copy">Built with .NET 8 · Clean Architecture</div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script src="/js/main.js"></script>
+<script>
+(async () => {
+  const { apiFetch, fmt, fmtDate, animateCount } = window.PostAPI;
+
+  const [posts, cats, tags, popularTags, recentPosts] = await Promise.all([
+    apiFetch('/posts'),
+    apiFetch('/categories'),
+    apiFetch('/tags'),
+    apiFetch('/tags?popularOnly=true&take=10'),
+    apiFetch('/posts/search?pageSize=6&sortBy=created&sortDirection=1'),
+  ]);
+
+  const postCount = posts?.items?.length ?? 0;
+  const catCount  = cats?.items?.length  ?? 0;
+  const tagCount  = tags?.items?.length  ?? 0;
+  const maxVal    = Math.max(postCount, catCount, tagCount, 1);
+
+  // Animate counters
+  function setCnt(id, val) {
+    const el = document.getElementById(id);
+    if (el) animateCount(el, val);
+  }
+  setCnt('count-posts',      postCount);
+  setCnt('count-categories', catCount);
+  setCnt('count-tags',       tagCount);
+
+  // Progress bars
+  setTimeout(() => {
+    const pb = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.style.width = Math.round((val / maxVal) * 100) + '%';
+    };
+    pb('bar-posts',      postCount);
+    pb('bar-categories', catCount);
+    pb('bar-tags',       tagCount);
+  }, 100);
+
+  document.getElementById('refresh-label').textContent = 'Last updated ' + new Date().toLocaleTimeString();
+
+  // ── Popular Tags ──────────────────────────────────────────────
+  const ptArea = document.getElementById('popular-tags-area');
+  const ptBadge = document.getElementById('tags-total-badge');
+  if (popularTags?.items?.length) {
+    ptBadge.textContent = popularTags.items.length + ' tags';
+    const maxCount = Math.max(...popularTags.items.map(t => t.count), 1);
+    ptArea.innerHTML = popularTags.items.map(t => `
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="flex:1;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="font-size:0.875rem; font-weight:600;">${t.name}</span>
+            <span class="badge badge-neutral">${fmt(t.count)}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${Math.round((t.count/maxCount)*100)}%;"></div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    ptArea.innerHTML = '<div class="empty-state"><div class="empty-icon">🏷</div><p>No tags yet</p></div>';
+  }
+
+  // ── Root Categories ───────────────────────────────────────────
+  const cArea = document.getElementById('categories-area');
+  const cBadge = document.getElementById('cats-total-badge');
+  const rootCats = cats?.items?.filter(c => !c.parentCategoryId) ?? [];
+  cBadge.textContent = rootCats.length + ' root';
+  if (rootCats.length) {
+    cArea.innerHTML = rootCats.map(c => `
+      <div class="category-item">
+        <div>
+          <div class="category-name">${c.name}</div>
+          <div class="category-slug">${c.slug}</div>
+        </div>
+        ${c.description ? `<span style="font-size:0.8rem; color:var(--text-muted);">${c.description}</span>` : ''}
+      </div>
+    `).join('');
+  } else {
+    cArea.innerHTML = '<div class="empty-state"><div class="empty-icon">🗂</div><p>No categories yet</p></div>';
+  }
+
+  // ── Recent Posts ──────────────────────────────────────────────
+  const rpArea = document.getElementById('recent-posts-area');
+  const rpItems = recentPosts?.items ?? [];
+  if (rpItems.length) {
+    rpArea.innerHTML = rpItems.map(p => `
+      <div class="post-item">
+        <div>
+          <div class="post-title">${p.title ?? 'Untitled'}</div>
+          <div class="post-meta">${fmtDate(p.createdAt)} &nbsp;·&nbsp; ${fmt(p.viewCount ?? 0)} views</div>
+        </div>
+        <span class="post-slug">${(p.slug ?? '').substring(0, 28)}${(p.slug?.length ?? 0) > 28 ? '…' : ''}</span>
+      </div>
+    `).join('');
+  } else {
+    rpArea.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>No posts yet</p></div>';
+  }
+
+  // ── All Tags Cloud ────────────────────────────────────────────
+  const allTagsCloud = document.getElementById('all-tags-cloud');
+  const allBadge     = document.getElementById('all-tags-badge');
+  const allTags = tags?.items ?? [];
+  allBadge.textContent = allTags.length + ' total';
+  if (allTags.length) {
+    allTagsCloud.innerHTML = allTags.map(t => `
+      <span class="tag-pill">
+        ${t.name}
+        <span class="tag-count">${fmt(t.count)}</span>
+      </span>
+    `).join('');
+  } else {
+    allTagsCloud.innerHTML = '<div class="empty-state w-full"><div class="empty-icon">🏷</div><p>No tags yet</p></div>';
+  }
+})();
+</script>
+</body>
+</html>
