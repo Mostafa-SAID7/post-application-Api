@@ -18,9 +18,18 @@ namespace Post.Infrastructure.Repositories
             return await DbSet.AnyAsync(p => p.Slug == slug && !p.IsDeleted);
         }
 
+        public async Task<Domain.Entities.Post?> GetByIdWithTagsAsync(Guid id)
+        {
+            return await DbSet
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        }
+
         public async Task<Domain.Entities.Post?> GetWithComments(Guid id)
         {
-            return await DbSet.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+            return await DbSet
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         }
 
         public async Task<List<Domain.Entities.Post>> GetPopularPosts(int take = 10)

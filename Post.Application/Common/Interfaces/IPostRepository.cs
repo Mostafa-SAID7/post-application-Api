@@ -5,7 +5,8 @@ namespace Post.Application.Common.Interfaces
 {
     public interface IPostRepository : IRepository<Domain.Entities.Post>
     {
-        Task<bool> ExistsAsync(string title);
+        Task<bool> ExistsAsync(string slug);
+        Task<Domain.Entities.Post?> GetByIdWithTagsAsync(Guid id);
         Task<Domain.Entities.Post?> GetWithComments(Guid id);
         Task<List<Domain.Entities.Post>> GetPopularPosts(int take = 10);
         
