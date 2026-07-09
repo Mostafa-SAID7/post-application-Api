@@ -1,9 +1,13 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Post.Application.Common.Interfaces;
 
 namespace Post.Application.Common.Behaviors
 {
+    /// <summary>
+    /// Logs command execution scope. Queries pass through with zero overhead.
+    /// Actual DB transactions are managed per-handler via IUnitOfWork.
+    /// Bug fix: was checking EndsWith("Request") — all commands end with "Command".
+    /// </summary>
     public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
@@ -21,32 +25,25 @@ namespace Post.Application.Common.Behaviors
         {
             var requestName = typeof(TRequest).Name;
 
-            // Only apply transactions to commands (not queries)
-            // Queries don't modify data, so they don't need transactions
             if (!IsCommand(requestName))
-            {
                 return await next();
-            }
 
-            _logger.LogInformation("Starting transaction for command: {CommandName}", requestName);
+            _logger.LogInformation("Executing command: {CommandName}", requestName);
 
             try
             {
                 var response = await next();
-                _logger.LogInformation("Transaction committed for command: {CommandName}", requestName);
+                _logger.LogInformation("Command succeeded: {CommandName}", requestName);
                 return response;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Transaction rolled back for command: {CommandName}", requestName);
+                _logger.LogError(ex, "Command failed: {CommandName}", requestName);
                 throw;
             }
         }
 
-        private static bool IsCommand(string requestName)
-        {
-            return requestName.EndsWith("Request") && 
-                   (requestName.Contains("Create") || requestName.Contains("Update") || requestName.Contains("Delete"));
-        }
+        private static bool IsCommand(string requestName) =>
+            requestName.EndsWith("Command", StringComparison.OrdinalIgnoreCase);
     }
 }
