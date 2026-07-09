@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- AutoMapper DI integration (AddAutoMapper used in ApplicationServicesExtension) -->
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="MediatR" Version="11.1.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
-    <PackageReference Include="FluentValidation" Version="11.9.2" />
+    <!-- MediatR 12 — AddMediatR + IPipelineBehavior registrations in ApplicationServicesExtension -->
+    <!-- Extensions package removed: merged into MediatR 12 base package -->
+    <PackageReference Include="MediatR" Version="12.0.0" />
+    <!-- FluentValidation — AddValidatorsFromAssembly in ApplicationServicesExtension -->
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+    <!-- Swagger UI -->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <!-- EF Core tooling (dotnet ef migrations) -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

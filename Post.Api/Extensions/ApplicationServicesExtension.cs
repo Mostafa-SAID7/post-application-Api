@@ -8,7 +8,18 @@ using Post.Application.Features.Posts.Queries.GetPost;
 namespace Post.Api.Extensions
 {
     /// <summary>
-    /// Extension methods for registering application layer services
+    /// Registers Application-layer services: AutoMapper, MediatR pipeline, FluentValidation.
+    ///
+    /// Pipeline behavior order (outer → inner):
+    ///   LoggingBehavior     — traces every request with timing
+    ///   CachingBehavior     — returns cached response when [Cacheable] is present
+    ///   ValidationBehavior  — runs FluentValidation before the handler
+    ///   PerformanceBehavior — warns when a request exceeds 500 ms
+    ///   TransactionBehavior — logs command execution scope (queries bypass it)
+    ///
+    /// Removed behaviors:
+    ///   AuthorizationBehavior — was a TODO stub with no real logic; zero security value
+    ///   ExceptionBehavior     — duplicated ExceptionFilter; logging is already in LoggingBehavior
     /// </summary>
     public static class ApplicationServicesExtension
     {
@@ -22,11 +33,9 @@ namespace Post.Api.Extensions
                 cfg.RegisterServicesFromAssembly(typeof(GetPostQuery).Assembly);
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
-                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ExceptionBehavior<,>));
             });
 
             services.AddValidatorsFromAssembly(typeof(CreatePostCommandValidator).Assembly);

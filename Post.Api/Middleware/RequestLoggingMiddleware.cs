@@ -1,7 +1,12 @@
 namespace Post.Api.Middleware
 {
     /// <summary>
-    /// Middleware for logging HTTP requests and responses
+    /// Logs incoming requests and their completed status codes.
+    /// The MemoryStream body-swap pattern was removed — it intercepted
+    /// SendFileAsync responses (static files, minimal API routes) and produced
+    /// Content-Length: 0 because SendFileAsync writes directly to the Kestrel socket,
+    /// bypassing any substituted stream. Status code is available on HttpContext
+    /// without capturing the body.
     /// </summary>
     public class RequestLoggingMiddleware
     {
@@ -17,38 +22,25 @@ namespace Post.Api.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var correlationId = context.TraceIdentifier;
-            var method = context.Request.Method;
-            var path = context.Request.Path;
 
             _logger.LogInformation(
                 "Incoming request - CorrelationId: {CorrelationId}, Method: {Method}, Path: {Path}",
-                correlationId, method, path);
+                correlationId, context.Request.Method, context.Request.Path);
 
-            var originalBodyStream = context.Response.Body;
-
-            using (var responseBody = new MemoryStream())
+            try
             {
-                context.Response.Body = responseBody;
+                await _next(context);
 
-                try
-                {
-                    await _next(context);
-
-                    _logger.LogInformation(
-                        "Request completed - CorrelationId: {CorrelationId}, StatusCode: {StatusCode}",
-                        correlationId, context.Response.StatusCode);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex,
-                        "Request failed - CorrelationId: {CorrelationId}, Exception: {Message}",
-                        correlationId, ex.Message);
-                    throw;
-                }
-                finally
-                {
-                    await responseBody.CopyToAsync(originalBodyStream);
-                }
+                _logger.LogInformation(
+                    "Request completed - CorrelationId: {CorrelationId}, StatusCode: {StatusCode}",
+                    correlationId, context.Response.StatusCode);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Request failed - CorrelationId: {CorrelationId}, Exception: {Message}",
+                    correlationId, ex.Message);
+                throw;
             }
         }
     }
