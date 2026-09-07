@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
