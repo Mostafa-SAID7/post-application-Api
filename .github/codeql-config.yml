@@ -1,0 +1,22 @@
+name: "CodeQL Config"
+
+# Query suites to execute
+queries:
+  - uses: security-and-quality
+
+# Exclude specific paths from analysis
+paths-ignore:
+  - '**/tests'
+  - '**/bin'
+  - '**/obj'
+  - '**/.vs'
+  - '**/node_modules'
+  - '**/packages'
+  - '**/*.test.cs'
+  - '**/*.tests.cs'
+
+# Additional configuration
+disable-default-queries: false
+
+# Only use officially supported queries (no experimental)
+# Use the latest query suites for C#

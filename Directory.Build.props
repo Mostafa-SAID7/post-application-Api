@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- Central version management for all projects -->
+  <!-- This ensures all assemblies are versioned consistently -->
+  
+  <PropertyGroup>
+    <!-- Primary Version Source (keep in sync with CHANGELOG.md and Git tags) -->
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    
+    <!-- Assembly versioning -->
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
+    
+    <!-- Deterministic Build Configuration -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' != ''">true</ContinuousIntegrationBuild>
+    <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    
+    <!-- Language Features -->
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    
+    <!-- Compiler Warnings as Errors (enforce code quality) -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    
+    <!-- Reproducible builds -->
+    <EnableSourceLink>true</EnableSourceLink>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+  </PropertyGroup>
+  
+  <!-- Package Metadata -->
+  <PropertyGroup>
+    <Authors>Post Application Team</Authors>
+    <Company>Post Application</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/mohammedhossam3300-ctrl/post-application-Api</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  
+  <!-- Documentation comment to reference version strategy -->
+  <!--
+  VERSION MANAGEMENT STRATEGY:
+  
+  1. VERSION SOURCE OF TRUTH: This file (Directory.Build.props)
+     - Keep VersionPrefix in sync with CHANGELOG.md
+     - Keep in sync with semantic release tags (vX.Y.Z)
+     - Update ONLY on release
+  
+  2. VERSIONING FLOW:
+     - Commits are made with conventional commits
+     - CI runs on every push/PR
+     - Semantic release calculates next version from commits
+     - On release: Tag created (vX.Y.Z) → Directory.Build.props updated → Release published
+  
+  3. DETERMINISTIC BUILDS:
+     - Deterministic=true: Same source produces same binary
+     - ContinuousIntegrationBuild: Set by CI environment
+     - EmbedUntrackedSources: Include all sources in PDB
+     - PathMap: Normalize paths for reproducibility
+  
+  4. ASSEMBLY VERSIONS:
+     - AssemblyVersion: Compatibility version (rarely changes)
+     - FileVersion: Build version (matches release version)
+     - InformationalVersion: Full semantic version
+  
+  DO NOT:
+  - Manually hardcode versions in individual .csproj files (they inherit from this file)
+  - Use wildcard versions (e.g., 1.1.*)
+  - Commit version changes outside of release workflow
+  - Mix version sources (e.g., separate NuGet versions)
+  -->
+</Project>

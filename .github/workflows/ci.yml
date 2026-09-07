@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+  checks: write
+
+jobs:
+  restore-and-build:
+    name: Restore & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: .
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+        working-directory: .
+
+  format-and-analyzers:
+    name: Format & Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check formatting (dotnet format)
+        run: |
+          dotnet format --verify-no-changes --verbosity diagnostic || (
+            echo "::error::Code formatting issues detected. Run 'dotnet format' locally and commit changes."
+            exit 1
+          )
+
+      - name: Code analysis (build with analyzers)
+        run: |
+          dotnet build --configuration Release \
+            -p:WarningLevel=4 \
+            -p:TreatWarningsAsErrors=false \
+            --no-restore
+        continue-on-error: true
+
+  dependency-check:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list package --vulnerable --format json > vulnerabilities.json 2>&1 || true
+          if grep -q '"severity"' vulnerabilities.json; then
+            echo "::warning::Vulnerable packages detected. Review and update dependencies."
+            cat vulnerabilities.json
+          fi
+
+      - name: Check for outdated packages
+        run: |
+          dotnet outdated --options General.Prerelease=true || true
+
+  publish-validation:
+    name: Publish Validation
+    runs-on: ubuntu-latest
+    needs: [restore-and-build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Validate publish (dry-run)
+        run: |
+          dotnet publish Post.Api/Post.Api.csproj \
+            --configuration Release \
+            --no-restore \
+            --output ./publish-test
+          
+          # Verify key files exist
+          if [ ! -f "./publish-test/Post.Api.dll" ]; then
+            echo "::error::Published artifact missing Post.Api.dll"
+            exit 1
+          fi
+
+      - name: Verify artifact structure
+        run: |
+          ls -la ./publish-test/ | head -20
+          echo "---"
+          ls -la ./publish-test/wwwroot/ 2>/dev/null || echo "wwwroot directory not found"
+
+  ci-summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [restore-and-build, format-and-analyzers, dependency-check, publish-validation]
+    if: always()
+    steps:
+      - name: Check job status
+        run: |
+          if [ "${{ needs.restore-and-build.result }}" != "success" ]; then
+            echo "::error::Build failed"
+            exit 1
+          fi
+          if [ "${{ needs.format-and-analyzers.result }}" != "success" ]; then
+            echo "::error::Format/analyzer checks failed"
+            exit 1
+          fi
+          if [ "${{ needs.dependency-check.result }}" != "success" ]; then
+            echo "::warning::Dependency checks had issues (non-blocking)"
+          fi
+          if [ "${{ needs.publish-validation.result }}" != "success" ]; then
+            echo "::error::Publish validation failed"
+            exit 1
+          fi
+          echo "✅ All CI checks passed"

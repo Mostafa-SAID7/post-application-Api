@@ -1,0 +1,56 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Setup & Build
+    init: |
+      echo "🔧 Setting up Post Application development environment..."
+      
+      # Restore dependencies
+      dotnet restore
+      
+      # Build the solution
+      dotnet build --configuration Debug
+      
+      # Run database migrations
+      dotnet ef database update --project Post.Infrastructure
+      
+      echo "✅ Setup complete!"
+    command: |
+      echo "🚀 Post Application ready for development"
+      echo "Run: dotnet run --project Post.Api"
+      echo "API will be available at: http://localhost:5000"
+      echo "Swagger UI: http://localhost:5000/swagger"
+
+ports:
+  - port: 5000
+    onOpen: open-browser
+    visibility: public
+    name: Post API
+  - port: 5432
+    visibility: private
+    name: PostgreSQL (optional)
+
+vscode:
+  extensions:
+    - ms-dotnettools.csharp@2.21.13
+    - ms-dotnettools.vscode-dotnet-runtime@1.5.1
+    - ms-vscode.makefile-tools@0.7.0
+    - eamodio.gitlens@14.12.0
+    - DotJoshJohnson.xml@2.5.1
+    - formulahendry.dotnet-test-explorer@0.7.8
+    - GitHub.copilot@1.186.0
+    - GitHub.copilot-chat@0.15.2023122401
+
+gitConfig:
+  core.safecrlf: false
+
+prebuild:
+  # Cache dependencies
+  command: dotnet restore
+
+# Environment variables for development
+env:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:5000
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"

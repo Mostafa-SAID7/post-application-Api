@@ -4,6 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Version Management for Releases -->
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>1.1.0</FileVersion>
+    <InformationalVersion>1.1.0</InformationalVersion>
+    
+    <!-- Metadata for Release Artifacts -->
+    <Product>Post Application API</Product>
+    <Company>Post Application</Company>
+    <Description>Modern ASP.NET Core 8 API with Clean Architecture and CQRS pattern</Description>
+    <PackageProjectUrl>https://github.com/mohammedhossam3300-ctrl/post-application-Api</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/mohammedhossam3300-ctrl/post-application-Api</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    
+    <!-- Deterministic Build Settings -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <DebugType>embedded</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

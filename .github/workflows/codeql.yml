@@ -1,0 +1,68 @@
+name: CodeQL Security Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # Run nightly scan at 2 AM UTC
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['csharp']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@6c51ce9dedfaa705ax23564897d997cad94e27854 # v3.25.12
+        with:
+          languages: ${{ matrix.language }}
+          # CodeQL configuration file location
+          config-file: ./.github/codeql-config.yml
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: |
+          dotnet build --configuration Release --no-restore
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@6c51ce9dedfaa705ax23564897d997cad94e27854 # v3.25.12
+        with:
+          category: "/language:csharp"
+          upload: true
+          wait-for-processing: true
+
+  security-report:
+    name: Security Report
+    runs-on: ubuntu-latest
+    needs: [analyze]
+    if: always()
+    steps:
+      - name: Check analysis results
+        run: |
+          if [ "${{ needs.analyze.result }}" == "failure" ]; then
+            echo "::error::CodeQL analysis failed"
+            exit 1
+          fi
+          echo "✅ CodeQL analysis completed"
