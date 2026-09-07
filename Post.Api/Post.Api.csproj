@@ -33,7 +33,7 @@
     <PackageReference Include="AutoMapper" Version="13.0.0" />
     <!-- MediatR 12 — AddMediatR + IPipelineBehavior registrations in ApplicationServicesExtension -->
     <!-- Extensions package removed: merged into MediatR 12 base package -->
-    <PackageReference Include="MediatR" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
     <!-- FluentValidation — AddValidatorsFromAssembly in ApplicationServicesExtension -->
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <!-- Swagger UI -->
