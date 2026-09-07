@@ -234,6 +234,7 @@ jobs:
           files: |
             ./artifact/**
           draft: false
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
