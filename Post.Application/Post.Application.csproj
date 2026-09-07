@@ -30,14 +30,14 @@
 
   <ItemGroup>
     <!-- AutoMapper — entity-to-DTO mapping profiles -->
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
     <!-- FluentValidation — command validators -->
     <PackageReference Include="FluentValidation" Version="11.9.2" />
     <!-- MediatR 12 — IRequest, IRequestHandler, IPipelineBehavior -->
     <!-- Extensions package removed: merged into MediatR 12 base package -->
     <PackageReference Include="MediatR" Version="12.0.0" />
     <!-- Logging abstractions for behaviors — must match Caching.Memory transitive requirement -->
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     <!-- In-memory cache for CachingBehavior — updated from 8.0.0 (known vuln) -->
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.7" />
   </ItemGroup>
