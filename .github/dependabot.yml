@@ -10,8 +10,6 @@ updates:
       time: "03:00"
       timezone: "UTC"
     open-pull-requests-limit: 5
-    pull-request-branch-name:
-      separator: "/"
     reviewers:
       - "memo"
     assignees:
@@ -26,17 +24,11 @@ updates:
       - dependency-type: "direct"
       - dependency-type: "indirect"
     ignore:
-      # Ignore pre-release versions unless explicitly needed
       - dependency-name: "*"
         update-types:
           - "version-update:semver-prerelease"
-    # Fail on any missing dependency metadata
     fail-on-non-existent-files: false
-    # Rebase stale pull requests
     rebase-strategy: "auto"
-    # Allow up to 2 open PRs per ecosystem
-    pull-request-branch-name:
-      separator: "/"
 
   # GitHub Actions updates
   - package-ecosystem: "github-actions"
@@ -57,23 +49,10 @@ updates:
     commit-message:
       prefix: "ci(actions)"
       include: "scope"
-    # Only allow patch and minor updates for actions
     allow:
       - dependency-type: "direct"
-    # Ignore pre-release versions
     ignore:
       - dependency-name: "*"
         update-types:
           - "version-update:semver-prerelease"
     rebase-strategy: "auto"
-
-  # Version updates (also triggers semantic release)
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "tuesday"
-      time: "02:00"
-      timezone: "UTC"
-    labels:
-      - "ci/cd"
