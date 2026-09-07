@@ -8,7 +8,6 @@ on:
     branches:
       - main
   schedule:
-    # Run nightly scan at 2 AM UTC
     - cron: '0 2 * * *'
 
 permissions:
@@ -25,17 +24,16 @@ jobs:
         language: ['csharp']
     steps:
       - name: Checkout repository
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@6c51ce9dedfaa705ax23564897d997cad94e27854 # v3.25.12
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          # CodeQL configuration file location
           config-file: ./.github/codeql-config.yml
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -47,7 +45,7 @@ jobs:
           dotnet build --configuration Release --no-restore
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@6c51ce9dedfaa705ax23564897d997cad94e27854 # v3.25.12
+        uses: github/codeql-action/analyze@v3
         with:
           category: "/language:csharp"
           upload: true

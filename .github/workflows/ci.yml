@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -39,10 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -69,10 +69,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -97,10 +97,10 @@ jobs:
     needs: [restore-and-build]
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 

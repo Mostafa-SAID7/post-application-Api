@@ -15,12 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Verify CI workflow status
         run: |
           echo "Ensuring CI pipeline completed successfully on this commit..."
-          # This job is a safety check that semantic release only runs after CI passes
           echo "✅ Proceeding with semantic release process"
 
   semantic-versioning:
@@ -34,14 +33,13 @@ jobs:
       should_release: ${{ steps.version.outputs.should_release }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Get last version from tags
         id: last_version
         run: |
-          # Get latest semantic version tag
           LAST_TAG=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null || echo "v1.0.0")
           LAST_VERSION=${LAST_TAG#v}
           echo "last_version=$LAST_VERSION" >> $GITHUB_OUTPUT
@@ -51,18 +49,13 @@ jobs:
       - name: Parse conventional commits
         id: commits
         run: |
-          # Get commits since last tag
           COMMITS=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline)
-          
-          # Check commit types
           HAS_BREAKING=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="%B" | grep -i "BREAKING CHANGE" || echo "")
           HAS_FEATURE=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*feat" || echo "")
           HAS_FIX=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*fix" || echo "")
-          
           echo "has_breaking=$([[ -n '$HAS_BREAKING' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
           echo "has_feature=$([[ -n '$HAS_FEATURE' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
           echo "has_fix=$([[ -n '$HAS_FIX' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
-          
           echo "Commits since ${{ steps.last_version.outputs.last_tag }}:"
           echo "$COMMITS"
 
@@ -71,16 +64,13 @@ jobs:
         run: |
           LAST_VERSION="${{ steps.last_version.outputs.last_version }}"
           IFS='.' read -r MAJOR MINOR PATCH <<< "$LAST_VERSION"
-          
           HAS_BREAKING="${{ steps.commits.outputs.has_breaking }}"
           HAS_FEATURE="${{ steps.commits.outputs.has_feature }}"
           HAS_FIX="${{ steps.commits.outputs.has_fix }}"
           
-          # Determine if release is needed
           if [[ "$HAS_BREAKING" == "true" || "$HAS_FEATURE" == "true" || "$HAS_FIX" == "true" ]]; then
             SHOULD_RELEASE="true"
             
-            # Calculate version bump (breaking > feature > fix)
             if [[ "$HAS_BREAKING" == "true" ]]; then
               MAJOR=$((MAJOR + 1))
               MINOR=0
@@ -111,7 +101,6 @@ jobs:
           echo "  Next: $NEW_VERSION"
           echo "  Release: $SHOULD_RELEASE"
           
-          # Generate release notes
           if [[ "$SHOULD_RELEASE" == "true" ]]; then
             RELEASE_NOTES=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="- %s" | sort)
             echo "release_notes<<EOF" >> $GITHUB_OUTPUT
@@ -128,7 +117,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -152,8 +141,6 @@ jobs:
       - name: Create annotated tag
         run: |
           TAG="${{ steps.check_tag.outputs.tag }}"
-          
-          # Create immutable annotated tag
           git tag -a "$TAG" \
             -m "Release $TAG
 
@@ -162,16 +149,12 @@ jobs:
           Commit: $(git rev-parse HEAD)
           Date: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           
-          # Verify tag was created
           git show "$TAG"
-          
-          # Push tag
           git push origin "$TAG"
-          
           echo "✅ Tag $TAG created and pushed"
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@144aa2faf79fb9b93b88ef1160c04b27ff7d5bb3 # v2.1.0
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.check_tag.outputs.tag }}
           name: Release ${{ steps.check_tag.outputs.tag }}
@@ -199,10 +182,10 @@ jobs:
     if: needs.semantic-versioning.outputs.should_release == 'true'
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@dfc8cca69cc8cc61224869b72edc4e44d27efdf1 # v4.1.0
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
@@ -217,7 +200,7 @@ jobs:
             --output ./artifact
 
       - name: Upload artifact to release
-        uses: softprops/action-gh-release@144aa2faf79fb9b93b88ef1160c04b27ff7d5bb3 # v2.1.0
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.semantic-versioning.outputs.new_version }}
           files: |

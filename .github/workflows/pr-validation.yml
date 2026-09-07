@@ -18,12 +18,12 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
-        uses: actions/checkout@eacf72885be6976f31d90d3390724caa597ea75a # v4.1.0
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Validate commits
-        uses: amannn/action-semantic-pull-request@48620bc4dfe66cb71cc2c06e499465c933156706 # v5.4.0
+        uses: amannn/action-semantic-pull-request@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -64,7 +64,7 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog Secret Detection
-        uses: trufflesecurity/trufflehog@8dafb2c4b570e4a1fd65b718fae6a9f97fa41fcc # v3.76.0
+        uses: trufflesecurity/trufflehog@main
         with:
           path: ./
           base: ${{ github.event.repository.default_branch }}
