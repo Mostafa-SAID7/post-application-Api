@@ -37,7 +37,7 @@ var fileProvider = new PhysicalFileProvider(wwwroot);
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = fileProvider,
-    RequestPath  = ""
+    RequestPath = ""
 });
 
 app.UseMiddleware<RequestLoggingMiddleware>();
@@ -51,7 +51,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 // Serve index.html for the root path explicitly
-app.MapGet("/", async (HttpContext ctx) =>
+app.MapGet("/", async ctx =>
 {
     ctx.Response.ContentType = "text/html; charset=utf-8";
     await ctx.Response.SendFileAsync(Path.Combine(wwwroot, "index.html"));
@@ -60,17 +60,17 @@ app.MapGet("/", async (HttpContext ctx) =>
 app.MapControllers();
 
 // Fallback: unknown /api paths → JSON 404; everything else → 404.html
-app.MapFallback(async (HttpContext ctx) =>
+app.MapFallback(async ctx =>
 {
     if (ctx.Request.Path.StartsWithSegments("/api"))
     {
-        ctx.Response.StatusCode  = 404;
+        ctx.Response.StatusCode = 404;
         ctx.Response.ContentType = "application/json";
         await ctx.Response.WriteAsync("{\"error\":\"Not Found\"}");
     }
     else
     {
-        ctx.Response.StatusCode  = 404;
+        ctx.Response.StatusCode = 404;
         ctx.Response.ContentType = "text/html";
         var file = Path.Combine(app.Environment.WebRootPath ?? wwwroot, "404.html");
         if (File.Exists(file))

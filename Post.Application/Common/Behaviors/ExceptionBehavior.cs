@@ -4,15 +4,10 @@ using Post.Application.Common.Exceptions;
 
 namespace Post.Application.Common.Behaviors
 {
-    public class ExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class ExceptionBehavior<TRequest, TResponse>(ILogger<ExceptionBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly ILogger<ExceptionBehavior<TRequest, TResponse>> _logger;
-
-        public ExceptionBehavior(ILogger<ExceptionBehavior<TRequest, TResponse>> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<ExceptionBehavior<TRequest, TResponse>> _logger = logger;
 
         public async Task<TResponse> Handle(
             TRequest request,

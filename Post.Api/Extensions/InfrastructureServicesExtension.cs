@@ -21,7 +21,7 @@ namespace Post.Api.Extensions
         private static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            
+
             // Use SQLite if connection string looks like a file path
             if (connectionString?.Contains(".db") == true || connectionString?.Contains(".sqlite") == true)
             {

@@ -7,6 +7,6 @@ namespace Post.Domain.Entities
         public string? Description { get; set; }
         public Guid? ParentCategoryId { get; set; }
         public virtual Category? ParentCategory { get; set; }
-        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+        public virtual ICollection<Post> Posts { get; set; } = [];
     }
 }

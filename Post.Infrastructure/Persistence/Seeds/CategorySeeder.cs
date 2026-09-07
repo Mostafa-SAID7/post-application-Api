@@ -10,8 +10,8 @@ namespace Post.Infrastructure.Persistence.Seeds
     {
         public static List<Category> GenerateCategories()
         {
-            return new List<Category>
-            {
+            return
+            [
                 new Category
                 {
                     Id = Guid.NewGuid(),
@@ -52,7 +52,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     Description = "Unit testing, integration testing, and QA",
                     CreatedAt = DateTime.UtcNow
                 }
-            };
+            ];
         }
     }
 }

@@ -4,15 +4,10 @@ using Post.Infrastructure.Persistence;
 
 namespace Post.Infrastructure.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _context = context;
         private IDbContextTransaction? _transaction;
-
-        public UnitOfWork(AppDbContext context)
-        {
-            _context = context;
-        }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

@@ -6,16 +6,10 @@ using Post.Domain.ValueObjects;
 
 namespace Post.Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
+    public class CreateCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CreateCategoryCommandHandler(ICategoryRepository categoryRepository, IUnitOfWork unitOfWork)
-        {
-            _categoryRepository = categoryRepository;
-            _unitOfWork = unitOfWork;
-        }
+        private readonly ICategoryRepository _categoryRepository = categoryRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
@@ -24,9 +18,7 @@ namespace Post.Application.Features.Categories.Commands.CreateCategory
 
             if (request.ParentCategoryId.HasValue)
             {
-                var parent = await _categoryRepository.GetByIdAsync(request.ParentCategoryId.Value);
-                if (parent == null)
-                    throw new EntityNotFoundException("Category", request.ParentCategoryId.Value);
+                var parent = await _categoryRepository.GetByIdAsync(request.ParentCategoryId.Value) ?? throw new EntityNotFoundException("Category", request.ParentCategoryId.Value);
             }
 
             var baseSlug = Slug.GenerateSlug(request.Name);

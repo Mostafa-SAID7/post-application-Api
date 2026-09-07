@@ -5,12 +5,8 @@ using Post.Infrastructure.Persistence;
 
 namespace Post.Infrastructure.Repositories
 {
-    public class TagRepository : Repository<Tag>, ITagRepository
+    public class TagRepository(AppDbContext context) : Repository<Tag>(context), ITagRepository
     {
-        public TagRepository(AppDbContext context) : base(context)
-        {
-        }
-
         public async Task<Tag?> GetBySlugAsync(string slug)
         {
             return await DbSet

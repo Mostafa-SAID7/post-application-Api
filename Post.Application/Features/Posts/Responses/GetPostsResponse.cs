@@ -2,7 +2,7 @@ namespace Post.Application.Features.Posts.Responses
 {
     public class GetPostsResponse
     {
-        public List<PostItemResponse> Items { get; set; } = new();
+        public List<PostItemResponse> Items { get; set; } = [];
     }
 
     public class PostItemResponse

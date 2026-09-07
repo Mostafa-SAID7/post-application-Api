@@ -10,8 +10,8 @@ namespace Post.Infrastructure.Persistence.Seeds
     {
         public static List<Domain.Entities.Post> GeneratePosts(List<Category> categories, List<Tag> tags)
         {
-            return new List<Domain.Entities.Post>
-            {
+            return
+            [
                 new Domain.Entities.Post
                 {
                     Id = Guid.NewGuid(),
@@ -22,7 +22,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[0].Id,
                     ViewCount = 150,
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
-                    Tags = new List<Tag> { tags[0], tags[1] }
+                    Tags = [tags[0], tags[1]]
                 },
                 new Domain.Entities.Post
                 {
@@ -34,7 +34,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[1].Id,
                     ViewCount = 200,
                     CreatedAt = DateTime.UtcNow.AddDays(-25),
-                    Tags = new List<Tag> { tags[0], tags[8] }
+                    Tags = [tags[0], tags[8]]
                 },
                 new Domain.Entities.Post
                 {
@@ -46,7 +46,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[3].Id,
                     ViewCount = 180,
                     CreatedAt = DateTime.UtcNow.AddDays(-20),
-                    Tags = new List<Tag> { tags[2], tags[1] }
+                    Tags = [tags[2], tags[1]]
                 },
                 new Domain.Entities.Post
                 {
@@ -58,7 +58,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[1].Id,
                     ViewCount = 220,
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    Tags = new List<Tag> { tags[5], tags[1] }
+                    Tags = [tags[5], tags[1]]
                 },
                 new Domain.Entities.Post
                 {
@@ -70,7 +70,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[2].Id,
                     ViewCount = 160,
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    Tags = new List<Tag> { tags[3], tags[4] }
+                    Tags = [tags[3], tags[4]]
                 },
                 new Domain.Entities.Post
                 {
@@ -82,7 +82,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[4].Id,
                     ViewCount = 140,
                     CreatedAt = DateTime.UtcNow.AddDays(-5),
-                    Tags = new List<Tag> { tags[0], tags[7] }
+                    Tags = [tags[0], tags[7]]
                 },
                 new Domain.Entities.Post
                 {
@@ -94,7 +94,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[2].Id,
                     ViewCount = 120,
                     CreatedAt = DateTime.UtcNow.AddDays(-3),
-                    Tags = new List<Tag> { tags[4], tags[3] }
+                    Tags = [tags[4], tags[3]]
                 },
                 new Domain.Entities.Post
                 {
@@ -106,7 +106,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[0].Id,
                     ViewCount = 190,
                     CreatedAt = DateTime.UtcNow.AddDays(-1),
-                    Tags = new List<Tag> { tags[8], tags[7] }
+                    Tags = [tags[8], tags[7]]
                 },
                 new Domain.Entities.Post
                 {
@@ -118,7 +118,7 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[1].Id,
                     ViewCount = 175,
                     CreatedAt = DateTime.UtcNow.AddDays(-2),
-                    Tags = new List<Tag> { tags[9], tags[1] }
+                    Tags = [tags[9], tags[1]]
                 },
                 new Domain.Entities.Post
                 {
@@ -130,9 +130,9 @@ namespace Post.Infrastructure.Persistence.Seeds
                     CategoryId = categories[3].Id,
                     ViewCount = 145,
                     CreatedAt = DateTime.UtcNow.AddDays(-7),
-                    Tags = new List<Tag> { tags[2], tags[1] }
+                    Tags = [tags[2], tags[1]]
                 }
-            };
+            ];
         }
     }
 }

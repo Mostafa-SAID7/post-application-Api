@@ -1,4 +1,4 @@
-﻿using Post.Application.Common.Models;
+using Post.Application.Common.Models;
 using Post.Domain.Entities;
 
 namespace Post.Application.Common.Interfaces
@@ -9,7 +9,7 @@ namespace Post.Application.Common.Interfaces
         Task<Domain.Entities.Post?> GetByIdWithTagsAsync(Guid id);
         Task<Domain.Entities.Post?> GetWithComments(Guid id);
         Task<List<Domain.Entities.Post>> GetPopularPosts(int take = 10);
-        
+
         // Search and filter
         Task<PagedResult<Domain.Entities.Post>> SearchAsync(
             PostFilterParams filters,

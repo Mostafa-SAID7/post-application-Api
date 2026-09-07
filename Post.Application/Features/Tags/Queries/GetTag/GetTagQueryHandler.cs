@@ -5,21 +5,13 @@ using Post.Application.Features.Tags.Responses;
 
 namespace Post.Application.Features.Tags.Queries.GetTag
 {
-    public class GetTagQueryHandler : IRequestHandler<GetTagQuery, GetTagResponse>
+    public class GetTagQueryHandler(ITagRepository tagRepository) : IRequestHandler<GetTagQuery, GetTagResponse>
     {
-        private readonly ITagRepository _tagRepository;
-
-        public GetTagQueryHandler(ITagRepository tagRepository)
-        {
-            _tagRepository = tagRepository;
-        }
+        private readonly ITagRepository _tagRepository = tagRepository;
 
         public async Task<GetTagResponse> Handle(GetTagQuery request, CancellationToken cancellationToken)
         {
-            var tag = await _tagRepository.GetByIdAsync(request.Id);
-            if (tag == null)
-                throw new EntityNotFoundException("Tag", request.Id);
-
+            var tag = await _tagRepository.GetByIdAsync(request.Id) ?? throw new EntityNotFoundException("Tag", request.Id);
             return new GetTagResponse
             {
                 Id = tag.Id,

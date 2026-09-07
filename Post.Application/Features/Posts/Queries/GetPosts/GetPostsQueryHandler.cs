@@ -4,14 +4,9 @@ using Post.Application.Features.Posts.Responses;
 
 namespace Post.Application.Features.Posts.Queries.GetPosts
 {
-    public class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, GetPostsResponse>
+    public class GetPostsQueryHandler(IPostRepository postRepository) : IRequestHandler<GetPostsQuery, GetPostsResponse>
     {
-        private readonly IPostRepository _postRepository;
-
-        public GetPostsQueryHandler(IPostRepository postRepository)
-        {
-            _postRepository = postRepository;
-        }
+        private readonly IPostRepository _postRepository = postRepository;
 
         public async Task<GetPostsResponse> Handle(GetPostsQuery request, CancellationToken cancellationToken)
         {

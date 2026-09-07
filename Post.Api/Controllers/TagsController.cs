@@ -11,14 +11,9 @@ namespace Post.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TagsController : ControllerBase
+    public class TagsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public TagsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         /// <summary>
         /// Get all tags. Use popularOnly=true to get the most-used tags (sorted by Count).

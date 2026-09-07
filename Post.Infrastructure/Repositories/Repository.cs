@@ -7,16 +7,10 @@ using Post.Infrastructure.Persistence;
 
 namespace Post.Infrastructure.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T>(AppDbContext context) : IRepository<T> where T : BaseEntity
     {
-        protected readonly AppDbContext Context;
-        protected readonly DbSet<T> DbSet;
-
-        public Repository(AppDbContext context)
-        {
-            Context = context;
-            DbSet = context.Set<T>();
-        }
+        protected readonly AppDbContext Context = context;
+        protected readonly DbSet<T> DbSet = context.Set<T>();
 
         public async Task<T?> GetByIdAsync(Guid id)
         {
@@ -87,10 +81,10 @@ namespace Post.Infrastructure.Repositories
                 .Take(spec.Take)
                 .ToListAsync();
 
-            var pagination = new PaginationParams 
-            { 
-                PageNumber = (spec.Skip / spec.Take) + 1, 
-                PageSize = spec.Take 
+            var pagination = new PaginationParams
+            {
+                PageNumber = (spec.Skip / spec.Take) + 1,
+                PageSize = spec.Take
             };
 
             return new PagedResult<T>(items, totalCount, pagination.PageNumber, pagination.PageSize);

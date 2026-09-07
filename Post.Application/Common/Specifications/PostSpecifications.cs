@@ -58,9 +58,9 @@ namespace Post.Application.Common.Specifications
             {
                 var searchTerm = filters.SearchTerm!.ToLower();
                 Criteria = Criteria.And(p =>
-                    p.Title.ToLower().Contains(searchTerm) ||
+                    p.Title.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase) ||
                     p.Content.ToLower().Contains(searchTerm) ||
-                    (p.Summary != null && p.Summary.ToLower().Contains(searchTerm)));
+                    (p.Summary != null && p.Summary.Contains(searchTerm, StringComparison.CurrentCultureIgnoreCase)));
             }
 
             // Add tag filter

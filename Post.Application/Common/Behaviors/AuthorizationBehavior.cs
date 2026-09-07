@@ -11,15 +11,10 @@ namespace Post.Application.Common.Behaviors
         public string? Policies { get; set; }
     }
 
-    public class AuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class AuthorizationBehavior<TRequest, TResponse>(ILogger<AuthorizationBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly ILogger<AuthorizationBehavior<TRequest, TResponse>> _logger;
-
-        public AuthorizationBehavior(ILogger<AuthorizationBehavior<TRequest, TResponse>> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<AuthorizationBehavior<TRequest, TResponse>> _logger = logger;
 
         public async Task<TResponse> Handle(
             TRequest request,

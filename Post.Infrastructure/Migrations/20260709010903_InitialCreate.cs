@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -127,7 +127,7 @@ namespace Post.Infrastructure.Migrations
                 name: "IX_Categories_IsDeleted_ParentCategoryId",
                 schema: "dbo",
                 table: "Categories",
-                columns: new[] { "IsDeleted", "ParentCategoryId" });
+                columns: ["IsDeleted", "ParentCategoryId"]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentCategoryId",
@@ -153,7 +153,7 @@ namespace Post.Infrastructure.Migrations
                 schema: "dbo",
                 table: "Posts",
                 column: "CreatedAt",
-                descending: new bool[0]);
+                descending: []);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_IsDeleted",
@@ -165,8 +165,8 @@ namespace Post.Infrastructure.Migrations
                 name: "IX_Posts_IsDeleted_CreatedAt",
                 schema: "dbo",
                 table: "Posts",
-                columns: new[] { "IsDeleted", "CreatedAt" },
-                descending: new[] { false, true });
+                columns: ["IsDeleted", "CreatedAt"],
+                descending: [false, true]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_Slug",
@@ -180,7 +180,7 @@ namespace Post.Infrastructure.Migrations
                 schema: "dbo",
                 table: "Posts",
                 column: "ViewCount",
-                descending: new bool[0]);
+                descending: []);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostTags_TagId",
@@ -193,7 +193,7 @@ namespace Post.Infrastructure.Migrations
                 schema: "dbo",
                 table: "Tags",
                 column: "Count",
-                descending: new bool[0]);
+                descending: []);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_IsDeleted",
@@ -205,8 +205,8 @@ namespace Post.Infrastructure.Migrations
                 name: "IX_Tags_IsDeleted_Count",
                 schema: "dbo",
                 table: "Tags",
-                columns: new[] { "IsDeleted", "Count" },
-                descending: new[] { false, true });
+                columns: ["IsDeleted", "Count"],
+                descending: [false, true]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_Slug",

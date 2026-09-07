@@ -8,8 +8,8 @@ namespace Post.Application.Common.Specifications
     public abstract class Specification<T>
     {
         public Expression<Func<T, bool>>? Criteria { get; protected set; }
-        public List<Expression<Func<T, object>>> Includes { get; } = new();
-        public List<string> IncludeStrings { get; } = new();
+        public List<Expression<Func<T, object>>> Includes { get; } = [];
+        public List<string> IncludeStrings { get; } = [];
         public Expression<Func<T, object>>? OrderBy { get; protected set; }
         public Expression<Func<T, object>>? OrderByDescending { get; protected set; }
         public int Take { get; protected set; }

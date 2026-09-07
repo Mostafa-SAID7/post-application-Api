@@ -6,6 +6,6 @@ namespace Post.Domain.Entities
         public string Slug { get; set; } = string.Empty;
         public string? Description { get; set; }
         public int Count { get; set; }
-        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+        public virtual ICollection<Post> Posts { get; set; } = [];
     }
 }

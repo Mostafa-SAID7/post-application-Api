@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Post.Application.Features.Posts.Responses;
 
 namespace Post.Application.Features.Posts.Queries.GetPost

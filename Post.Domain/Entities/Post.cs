@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +15,7 @@ namespace Post.Domain.Entities
         public Guid? CategoryId { get; set; }
         public int ViewCount { get; set; }
         public virtual Category? Category { get; set; }
-        public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
+        public virtual ICollection<Tag> Tags { get; set; } = [];
     }
 }
 

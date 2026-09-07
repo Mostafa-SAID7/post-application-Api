@@ -5,16 +5,10 @@ using Post.Application.Features.Posts.Responses;
 
 namespace Post.Application.Features.Posts.Queries.SearchPosts
 {
-    public class SearchPostsHandler : IRequestHandler<SearchPostsQuery, SearchPostsResponse>
+    public class SearchPostsHandler(IPostRepository postRepository, IMapper mapper) : IRequestHandler<SearchPostsQuery, SearchPostsResponse>
     {
-        private readonly IPostRepository _postRepository;
-        private readonly IMapper _mapper;
-
-        public SearchPostsHandler(IPostRepository postRepository, IMapper mapper)
-        {
-            _postRepository = postRepository;
-            _mapper = mapper;
-        }
+        private readonly IPostRepository _postRepository = postRepository;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<SearchPostsResponse> Handle(SearchPostsQuery request, CancellationToken cancellationToken)
         {

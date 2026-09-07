@@ -3,12 +3,8 @@ using Post.Infrastructure.Persistence.Configurations;
 
 namespace Post.Infrastructure.Persistence
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Post.Domain.Entities.Post> Posts { get; set; }
         public DbSet<Post.Domain.Entities.Category> Categories { get; set; }
         public DbSet<Post.Domain.Entities.Tag> Tags { get; set; }

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace Post.Application.Features.Posts.Commands.CreatePost
 {

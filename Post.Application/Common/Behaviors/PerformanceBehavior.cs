@@ -4,16 +4,11 @@ using System.Diagnostics;
 
 namespace Post.Application.Common.Behaviors
 {
-    public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class PerformanceBehavior<TRequest, TResponse>(ILogger<PerformanceBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger;
+        private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger = logger;
         private const int SlowRequestThresholdMs = 500;
-
-        public PerformanceBehavior(ILogger<PerformanceBehavior<TRequest, TResponse>> logger)
-        {
-            _logger = logger;
-        }
 
         public async Task<TResponse> Handle(
             TRequest request,

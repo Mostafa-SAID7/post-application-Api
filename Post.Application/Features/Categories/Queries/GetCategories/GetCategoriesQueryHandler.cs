@@ -4,14 +4,9 @@ using Post.Application.Features.Categories.Responses;
 
 namespace Post.Application.Features.Categories.Queries.GetCategories
 {
-    public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, GetCategoriesResponse>
+    public class GetCategoriesQueryHandler(ICategoryRepository categoryRepository) : IRequestHandler<GetCategoriesQuery, GetCategoriesResponse>
     {
-        private readonly ICategoryRepository _categoryRepository;
-
-        public GetCategoriesQueryHandler(ICategoryRepository categoryRepository)
-        {
-            _categoryRepository = categoryRepository;
-        }
+        private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
         public async Task<GetCategoriesResponse> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {

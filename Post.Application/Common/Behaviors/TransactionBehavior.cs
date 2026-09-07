@@ -8,15 +8,10 @@ namespace Post.Application.Common.Behaviors
     /// Actual DB transactions are managed per-handler via IUnitOfWork.
     /// Bug fix: was checking EndsWith("Request") — all commands end with "Command".
     /// </summary>
-    public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class TransactionBehavior<TRequest, TResponse>(ILogger<TransactionBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger;
-
-        public TransactionBehavior(ILogger<TransactionBehavior<TRequest, TResponse>> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<TransactionBehavior<TRequest, TResponse>> _logger = logger;
 
         public async Task<TResponse> Handle(
             TRequest request,

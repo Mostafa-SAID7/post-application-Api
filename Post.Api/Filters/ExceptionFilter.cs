@@ -7,14 +7,9 @@ namespace Post.Api.Filters
     /// <summary>
     /// Global exception filter for handling application exceptions
     /// </summary>
-    public class ExceptionFilter : IExceptionFilter
+    public class ExceptionFilter(ILogger<ExceptionFilter> logger) : IExceptionFilter
     {
-        private readonly ILogger<ExceptionFilter> _logger;
-
-        public ExceptionFilter(ILogger<ExceptionFilter> logger)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger<ExceptionFilter> _logger = logger;
 
         public void OnException(ExceptionContext context)
         {
@@ -33,7 +28,7 @@ namespace Post.Api.Filters
             };
 
             // Handle specific exception types
-            if (exception is EntityNotFoundException notFound)
+            if (exception is EntityNotFoundException)
             {
                 response.Status = StatusCodes.Status404NotFound;
                 response.Type = "https://api.example.com/errors/not-found";

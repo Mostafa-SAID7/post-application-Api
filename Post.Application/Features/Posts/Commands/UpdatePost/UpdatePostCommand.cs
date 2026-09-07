@@ -10,6 +10,6 @@ namespace Post.Application.Features.Posts.Commands.UpdatePost
         public string Content { get; set; } = string.Empty;
         public string? Summary { get; set; }
         public Guid? CategoryId { get; set; }
-        public List<Guid>? TagIds { get; set; } = new();
+        public List<Guid>? TagIds { get; set; } = [];
     }
 }

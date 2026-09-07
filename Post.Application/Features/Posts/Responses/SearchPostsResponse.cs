@@ -4,7 +4,7 @@ namespace Post.Application.Features.Posts.Responses
 {
     public class SearchPostsResponse
     {
-        public List<PostSearchItemResponse> Items { get; set; } = new();
+        public List<PostSearchItemResponse> Items { get; set; } = [];
         public int TotalCount { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

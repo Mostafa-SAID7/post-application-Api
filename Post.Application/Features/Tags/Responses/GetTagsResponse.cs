@@ -2,7 +2,7 @@ namespace Post.Application.Features.Tags.Responses
 {
     public class GetTagsResponse
     {
-        public List<TagItemResponse> Items { get; set; } = new();
+        public List<TagItemResponse> Items { get; set; } = [];
     }
 
     public class TagItemResponse

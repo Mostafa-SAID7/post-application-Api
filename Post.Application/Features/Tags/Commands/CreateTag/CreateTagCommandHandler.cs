@@ -5,16 +5,10 @@ using Post.Domain.ValueObjects;
 
 namespace Post.Application.Features.Tags.Commands.CreateTag
 {
-    public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, CreateTagResponse>
+    public class CreateTagCommandHandler(ITagRepository tagRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateTagCommand, CreateTagResponse>
     {
-        private readonly ITagRepository _tagRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CreateTagCommandHandler(ITagRepository tagRepository, IUnitOfWork unitOfWork)
-        {
-            _tagRepository = tagRepository;
-            _unitOfWork = unitOfWork;
-        }
+        private readonly ITagRepository _tagRepository = tagRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<CreateTagResponse> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {

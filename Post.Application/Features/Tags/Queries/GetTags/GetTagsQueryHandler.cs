@@ -4,14 +4,9 @@ using Post.Application.Features.Tags.Responses;
 
 namespace Post.Application.Features.Tags.Queries.GetTags
 {
-    public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, GetTagsResponse>
+    public class GetTagsQueryHandler(ITagRepository tagRepository) : IRequestHandler<GetTagsQuery, GetTagsResponse>
     {
-        private readonly ITagRepository _tagRepository;
-
-        public GetTagsQueryHandler(ITagRepository tagRepository)
-        {
-            _tagRepository = tagRepository;
-        }
+        private readonly ITagRepository _tagRepository = tagRepository;
 
         public async Task<GetTagsResponse> Handle(GetTagsQuery request, CancellationToken cancellationToken)
         {

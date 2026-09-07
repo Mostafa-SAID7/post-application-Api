@@ -7,12 +7,8 @@ using Post.Infrastructure.Persistence;
 
 namespace Post.Infrastructure.Repositories
 {
-    public class PostRepository : Repository<Domain.Entities.Post>, IPostRepository
+    public class PostRepository(AppDbContext context) : Repository<Domain.Entities.Post>(context), IPostRepository
     {
-        public PostRepository(AppDbContext context) : base(context)
-        {
-        }
-
         public async Task<bool> ExistsAsync(string slug)
         {
             return await DbSet.AnyAsync(p => p.Slug == slug && !p.IsDeleted);

@@ -5,12 +5,8 @@ using Post.Infrastructure.Persistence;
 
 namespace Post.Infrastructure.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryRepository(AppDbContext context) : Repository<Category>(context), ICategoryRepository
     {
-        public CategoryRepository(AppDbContext context) : base(context)
-        {
-        }
-
         public async Task<Category?> GetBySlugAsync(string slug)
         {
             return await DbSet

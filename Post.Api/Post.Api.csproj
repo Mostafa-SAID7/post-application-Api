@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <!-- AutoMapper DI integration (AddAutoMapper used in ApplicationServicesExtension) -->
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.1.0" />
     <!-- MediatR 12 — AddMediatR + IPipelineBehavior registrations in ApplicationServicesExtension -->
     <!-- Extensions package removed: merged into MediatR 12 base package -->
     <PackageReference Include="MediatR" Version="12.0.0" />

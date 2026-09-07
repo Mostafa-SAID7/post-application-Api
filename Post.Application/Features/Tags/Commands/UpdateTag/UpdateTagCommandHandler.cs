@@ -5,23 +5,14 @@ using Post.Application.Features.Tags.Responses;
 
 namespace Post.Application.Features.Tags.Commands.UpdateTag
 {
-    public class UpdateTagCommandHandler : IRequestHandler<UpdateTagCommand, UpdateTagResponse>
+    public class UpdateTagCommandHandler(ITagRepository tagRepository, IUnitOfWork unitOfWork) : IRequestHandler<UpdateTagCommand, UpdateTagResponse>
     {
-        private readonly ITagRepository _tagRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UpdateTagCommandHandler(ITagRepository tagRepository, IUnitOfWork unitOfWork)
-        {
-            _tagRepository = tagRepository;
-            _unitOfWork = unitOfWork;
-        }
+        private readonly ITagRepository _tagRepository = tagRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<UpdateTagResponse> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
         {
-            var tag = await _tagRepository.GetByIdAsync(request.Id);
-            if (tag == null)
-                throw new EntityNotFoundException("Tag", request.Id);
-
+            var tag = await _tagRepository.GetByIdAsync(request.Id) ?? throw new EntityNotFoundException("Tag", request.Id);
             tag.Name = request.Name;
             tag.Description = request.Description;
 

@@ -1,4 +1,4 @@
-﻿namespace Post.Application.Common.Interfaces
+namespace Post.Application.Common.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {

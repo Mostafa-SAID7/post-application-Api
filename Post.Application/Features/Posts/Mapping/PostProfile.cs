@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Post.Application.Features.Posts.Commands.CreatePost;
 using Post.Application.Features.Posts.Commands.UpdatePost;
 using Post.Application.Features.Posts.Responses;

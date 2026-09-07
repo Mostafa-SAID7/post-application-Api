@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Post.Domain.ValueObjects
 {
-    public class Slug : IEquatable<Slug>
+    public partial class Slug : IEquatable<Slug>
     {
         public string Value { get; }
 
@@ -30,7 +30,7 @@ namespace Post.Domain.ValueObjects
             slugText = RemoveDiacritics(slugText);
 
             // Remove invalid characters - keep only alphanumeric and hyphens
-            slugText = Regex.Replace(slugText, @"[^a-z0-9\s-]", "");
+            slugText = MyRegex().Replace(slugText, "");
 
             // Replace spaces with hyphens
             slugText = Regex.Replace(slugText, @"\s+", "-");
@@ -74,5 +74,8 @@ namespace Post.Domain.ValueObjects
 
         public static bool operator !=(Slug? left, Slug? right) =>
             !(left == right);
+
+        [GeneratedRegex(@"[^a-z0-9\s-]")]
+        private static partial Regex MyRegex();
     }
 }
