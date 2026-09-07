@@ -27,7 +27,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          validateSingleCommitFormat: false
           validateSingleCommit: false
           types: |
             feat
@@ -49,6 +48,7 @@ jobs:
             db
             auth
             release
+            deps
           requireScope: false
           disallowScopes: |
             WIP
