@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Post.Application.Features.Posts.Responses;
 using Post.Application.Features.Posts.Queries.GetPost;
@@ -81,6 +82,7 @@ namespace Post.Api.Controllers
         /// <summary>
         /// Create a new post
         /// </summary>
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -93,6 +95,7 @@ namespace Post.Api.Controllers
         /// <summary>
         /// Update an existing post
         /// </summary>
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,6 +113,7 @@ namespace Post.Api.Controllers
         /// <summary>
         /// Delete a post by ID
         /// </summary>
+        [Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
