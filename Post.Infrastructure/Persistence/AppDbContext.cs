@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Post.Infrastructure.Persistence.Configurations;
 
 namespace Post.Infrastructure.Persistence

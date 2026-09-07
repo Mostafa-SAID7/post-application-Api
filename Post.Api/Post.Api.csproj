@@ -29,8 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- AutoMapper DI integration (AddAutoMapper used in ApplicationServicesExtension) -->
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <!-- AutoMapper 13 is compatible with .NET 9 Microsoft.Extensions packages -->
+    <PackageReference Include="AutoMapper" Version="13.0.0" />
     <!-- MediatR 12 — AddMediatR + IPipelineBehavior registrations in ApplicationServicesExtension -->
     <!-- Extensions package removed: merged into MediatR 12 base package -->
     <PackageReference Include="MediatR" Version="12.0.0" />

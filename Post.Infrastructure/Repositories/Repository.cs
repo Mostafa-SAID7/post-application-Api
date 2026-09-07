@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Post.Application.Common.Interfaces;
 using Post.Application.Common.Models;
 using Post.Application.Common.Specifications;
