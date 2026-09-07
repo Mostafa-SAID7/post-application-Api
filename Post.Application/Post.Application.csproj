@@ -32,7 +32,7 @@
     <!-- AutoMapper — entity-to-DTO mapping profiles -->
     <PackageReference Include="AutoMapper" Version="13.0.0" />
     <!-- FluentValidation — command validators -->
-    <PackageReference Include="FluentValidation" Version="11.9.2" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
     <!-- MediatR 12 — IRequest, IRequestHandler, IPipelineBehavior -->
     <!-- Extensions package removed: merged into MediatR 12 base package -->
     <PackageReference Include="MediatR" Version="12.0.0" />
