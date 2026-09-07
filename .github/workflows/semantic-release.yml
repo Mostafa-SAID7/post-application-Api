@@ -40,19 +40,31 @@ jobs:
       - name: Get last version from tags
         id: last_version
         run: |
-          LAST_TAG=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null || echo "v1.0.0")
-          LAST_VERSION=${LAST_TAG#v}
+          LAST_TAG=$(git describe --tags --match "v*" --abbrev=0 2>/dev/null)
+          if [ -z "$LAST_TAG" ]; then
+            LAST_TAG="HEAD~0"
+            LAST_VERSION="1.0.0"
+          else
+            LAST_VERSION=${LAST_TAG#v}
+          fi
           echo "last_version=$LAST_VERSION" >> $GITHUB_OUTPUT
           echo "last_tag=$LAST_TAG" >> $GITHUB_OUTPUT
-          echo "ℹ️ Last version: $LAST_VERSION"
+          echo "ℹ️ Last version: $LAST_VERSION (tag: $LAST_TAG)"
 
       - name: Parse conventional commits
         id: commits
         run: |
-          COMMITS=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline)
-          HAS_BREAKING=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="%B" | grep -i "BREAKING CHANGE" || echo "")
-          HAS_FEATURE=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*feat" || echo "")
-          HAS_FIX=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*fix" || echo "")
+          if [ "${{ steps.last_version.outputs.last_tag }}" == "HEAD~0" ]; then
+            COMMITS=$(git log HEAD --oneline)
+            HAS_BREAKING=$(git log HEAD --format="%B" | grep -i "BREAKING CHANGE" || echo "")
+            HAS_FEATURE=$(git log HEAD --oneline | grep "^.*feat" || echo "")
+            HAS_FIX=$(git log HEAD --oneline | grep "^.*fix" || echo "")
+          else
+            COMMITS=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline)
+            HAS_BREAKING=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="%B" | grep -i "BREAKING CHANGE" || echo "")
+            HAS_FEATURE=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*feat" || echo "")
+            HAS_FIX=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --oneline | grep "^.*fix" || echo "")
+          fi
           echo "has_breaking=$([[ -n '$HAS_BREAKING' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
           echo "has_feature=$([[ -n '$HAS_FEATURE' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
           echo "has_fix=$([[ -n '$HAS_FIX' ]] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
@@ -102,7 +114,11 @@ jobs:
           echo "  Release: $SHOULD_RELEASE"
           
           if [[ "$SHOULD_RELEASE" == "true" ]]; then
-            RELEASE_NOTES=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="- %s" | sort)
+            if [ "${{ steps.last_version.outputs.last_tag }}" == "HEAD~0" ]; then
+              RELEASE_NOTES=$(git log HEAD --format="- %s" | sort)
+            else
+              RELEASE_NOTES=$(git log ${{ steps.last_version.outputs.last_tag }}..HEAD --format="- %s" | sort)
+            fi
             echo "release_notes<<EOF" >> $GITHUB_OUTPUT
             echo "$RELEASE_NOTES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
