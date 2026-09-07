@@ -31,7 +31,7 @@ jobs:
         working-directory: .
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore --warnaserror=false
+        run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false
         working-directory: .
 
   format-and-analyzers:
